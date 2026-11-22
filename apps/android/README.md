@@ -278,6 +278,7 @@ What its config changes (each key's default is the Arcade's, so app.conf and app
 | `ORIENTATION` | `fullUser`: portrait and landscape as the phone is held (then SDL applies the app's `SDL_HINT_ORIENTATIONS`) | `sensorLandscape` |
 | `PLAY_REVIEW` | `0`: no In-App Review library | `1` |
 | `MANIFEST_EXTRA` | (none; optional) an edition's own manifest file, merged over `app/src/main/AndroidManifest.xml` (a permission, an activity; an attribute changed with `tools:replace`) | (none) |
+| `RES_EXTRA` | (none; optional) an edition's own resources folder, merged over the app's: a resource with the name and qualifiers of one of the app's replaces it (the `ic_launcher*` icons of `tools/make_icon.py`, for example) | (none) |
 | `ICON_STYLE` | `board`: the gold frame around the app's green table, its own knight, die and card, drawn by its code (`apps/boardgames/android/icon_art.c`, `make ... icon-art`) | the games' title screens |
 
 Everything the app needs is inside libmain.so (the fonts cut down to the texts, the rules in 22 languages, the tarot's

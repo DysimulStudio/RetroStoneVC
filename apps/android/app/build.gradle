@@ -26,6 +26,11 @@ def iapJava = new File(repo, "apps/common/android/java")
 // type's manifest is (a permission or an activity added; an attribute changed with tools:replace)
 def manifestExtra = conf.getProperty('MANIFEST_EXTRA') ? new File(repo, conf.getProperty('MANIFEST_EXTRA').trim()) : null
 if (manifestExtra && !manifestExtra.isFile()) throw new GradleException("MANIFEST_EXTRA: no file $manifestExtra")
+// RES_EXTRA=<folder> (optional): an edition's own resources, merged over the app's as a build type's are (a resource
+// with the name and qualifiers of one of the app's replaces it: the icons drawn by tools/make_icon.py, for example)
+def resExtraPath = conf.getProperty('RES_EXTRA', '').trim()
+def resExtra = resExtraPath ? new File(repo, resExtraPath) : null
+if (resExtra && !resExtra.isDirectory()) throw new GradleException("RES_EXTRA: no folder $resExtra")
 // the build output stays out of the sources: build/android/<free|full>/gradle/app
 layout.buildDirectory = new File(out, "gradle/app")
 
@@ -69,6 +74,10 @@ android {
         if (manifestExtra) {
             debug { manifest.srcFile manifestExtra }
             release { manifest.srcFile manifestExtra }
+        }
+        if (resExtra) {
+            debug { res.srcDirs += [resExtra] }
+            release { res.srcDirs += [resExtra] }
         }
     }
     signingConfigs {
