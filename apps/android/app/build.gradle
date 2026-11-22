@@ -22,6 +22,10 @@ def playReview = conf.getProperty('PLAY_REVIEW', '1') == '1'
 // native side (apps/common/iap_play.c, which apps/boardgames/Makefile builds on the same key) and the library
 def iap = conf.getProperty('IAP', '0') == '1'
 def iapJava = new File(repo, "apps/common/android/java")
+// MANIFEST_EXTRA=<file> (optional): an edition's own manifest, merged over src/main/AndroidManifest.xml as a build
+// type's manifest is (a permission or an activity added; an attribute changed with tools:replace)
+def manifestExtra = conf.getProperty('MANIFEST_EXTRA') ? new File(repo, conf.getProperty('MANIFEST_EXTRA').trim()) : null
+if (manifestExtra && !manifestExtra.isFile()) throw new GradleException("MANIFEST_EXTRA: no file $manifestExtra")
 // the build output stays out of the sources: build/android/<free|full>/gradle/app
 layout.buildDirectory = new File(out, "gradle/app")
 
@@ -61,6 +65,10 @@ android {
             java.srcDirs = appJava + [sdlJava] + (iap ? [iapJava] : [])
             jniLibs.srcDirs = [new File(out, "jniLibs")]
             res.srcDirs += [new File(out, "res")]
+        }
+        if (manifestExtra) {
+            debug { manifest.srcFile manifestExtra }
+            release { manifest.srcFile manifestExtra }
         }
     }
     signingConfigs {

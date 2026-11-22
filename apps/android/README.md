@@ -277,6 +277,7 @@ What its config changes (each key's default is the Arcade's, so app.conf and app
 | `JAVA_SRC`, `ACTIVITY` | `apps/boardgames/android/java`, `BoardActivity` (SDL's activity; ends the process when the app closes). `JAVA_SRC` may list several folders, separated by spaces: an edition's own activity can extend this one | `app/src/main/java`, `ArcadeActivity` |
 | `ORIENTATION` | `fullUser`: portrait and landscape as the phone is held (then SDL applies the app's `SDL_HINT_ORIENTATIONS`) | `sensorLandscape` |
 | `PLAY_REVIEW` | `0`: no In-App Review library | `1` |
+| `MANIFEST_EXTRA` | (none; optional) an edition's own manifest file, merged over `app/src/main/AndroidManifest.xml` (a permission, an activity; an attribute changed with `tools:replace`) | (none) |
 | `ICON_STYLE` | `board`: the gold frame around the app's green table, its own knight, die and card, drawn by its code (`apps/boardgames/android/icon_art.c`, `make ... icon-art`) | the games' title screens |
 
 Everything the app needs is inside libmain.so (the fonts cut down to the texts, the rules in 22 languages, the tarot's
