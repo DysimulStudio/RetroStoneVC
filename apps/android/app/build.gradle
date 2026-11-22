@@ -13,7 +13,10 @@ def conf = new Properties()
 file(System.getenv("RSA_CONF") ?: "$rootDir/app.conf").withReader('UTF-8') { conf.load(it) }
 def out = new File(System.getenv("RSA_OUT") ?: new File(repo, "build/android/free").path)
 def sdlJava = new File(repo, "build/deps/src/SDL2-2.32.10/android-project/app/src/main/java")
-def appJava = conf.getProperty('JAVA_SRC') ? new File(repo, conf.getProperty('JAVA_SRC')) : file('src/main/java')
+// JAVA_SRC: one folder, or several separated by spaces (an edition's own classes beside the shared activity)
+def appJava = conf.getProperty('JAVA_SRC') ? conf.getProperty('JAVA_SRC').trim().split(/\s+/).collect { new File(repo, it) }
+                                           : [file('src/main/java')]
+appJava.each { if (!it.isDirectory()) throw new GradleException("JAVA_SRC: no folder $it") }
 def playReview = conf.getProperty('PLAY_REVIEW', '1') == '1'
 // IAP=1: the in-app purchases through Google Play Billing (the RetroStone app's tips): the Java class beside the
 // native side (apps/common/iap_play.c, which apps/boardgames/Makefile builds on the same key) and the library
@@ -55,7 +58,7 @@ android {
     }
     sourceSets {
         main {
-            java.srcDirs = [appJava, sdlJava] + (iap ? [iapJava] : [])
+            java.srcDirs = appJava + [sdlJava] + (iap ? [iapJava] : [])
             jniLibs.srcDirs = [new File(out, "jniLibs")]
             res.srcDirs += [new File(out, "res")]
         }

@@ -274,7 +274,7 @@ What its config changes (each key's default is the Arcade's, so app.conf and app
 | Key | RetroStone Board | The Arcade |
 |---|---|---|
 | `NATIVE` | `boardgames`: libmain.so from `make -f apps/boardgames/Makefile android ABI=<abi>` (in `build/android/board/native`) | `launcher`: `apps/launcher/bundle.mk` |
-| `JAVA_SRC`, `ACTIVITY` | `apps/boardgames/android/java`, `BoardActivity` (SDL's activity; ends the process when the app closes) | `app/src/main/java`, `ArcadeActivity` |
+| `JAVA_SRC`, `ACTIVITY` | `apps/boardgames/android/java`, `BoardActivity` (SDL's activity; ends the process when the app closes). `JAVA_SRC` may list several folders, separated by spaces: an edition's own activity can extend this one | `app/src/main/java`, `ArcadeActivity` |
 | `ORIENTATION` | `fullUser`: portrait and landscape as the phone is held (then SDL applies the app's `SDL_HINT_ORIENTATIONS`) | `sensorLandscape` |
 | `PLAY_REVIEW` | `0`: no In-App Review library | `1` |
 | `ICON_STYLE` | `board`: the gold frame around the app's green table, its own knight, die and card, drawn by its code (`apps/boardgames/android/icon_art.c`, `make ... icon-art`) | the games' title screens |
